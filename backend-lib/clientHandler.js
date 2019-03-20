@@ -3,8 +3,8 @@ const jobs = require('./job');
 
 module.exports = {
     createClient: function(ID){
-    client = new Client(ID);
-    return client;
+        client = new Client(ID);
+        return client;
     }
 }
 
@@ -15,13 +15,18 @@ class Client {
         this.color = this.getRandomColor();
         this.currentUnit =1;
     }
-    takeInput(key, unitID){
-        if(unitID !== undefined && unitID !== -1)
-            this.currentUnit=unitID;
-        this.units[this.currentUnit-1].move(key);
-    }
 
-   getRandomColor() {
+
+    ////// MEMBER FUNCTIONS
+    takeInput(data, unitID){
+        this.currentUnit=unitID;
+        this.units[this.currentUnit-1].move(data);
+        this.units[this.currentUnit-1].target = data;
+    }
+    changeUnit(unitID){
+        this.currentUnit = unitID;
+    }
+    getRandomColor() {
         var letters = '0123456789ABCDEF';
         var color = '#';
         for (var i = 0; i < 6; i++) {
@@ -29,6 +34,14 @@ class Client {
         }
         console.log(color);
         return color;
-        }
+    }
+    updateUnitLocations() {
+        units.forEach((unit) => {
+            if(unit.target){
+                unit.goTarget();
+            }
+        });
+    }
+
 }
 
