@@ -36,7 +36,7 @@ class Client {
         return color;
     }
     updateUnitLocations() {
-        units.forEach((unit) => {
+        this.units.forEach((unit) => {
             if(unit.target){
                 unit.goTarget();
             }

@@ -14,7 +14,7 @@ module.exports = {
 
     default: class{
         constructor(){
-            this.hp=1;
+            this.hp=20;
             this.damage=50;
             this.speed=5;
             this.level=1;

@@ -3,7 +3,6 @@ const app = new express();
 const port = 3000;
 const server = require('http').Server(app);
 const clientHandler = require('./backend-lib/clientHandler');
-
 let io = require('socket.io')(server);
 let clients = [];
 
@@ -61,8 +60,11 @@ io.sockets.on('connection',
     // test mouseClick
     socket.on("targetSet", (data) => {
         clients.forEach((client) => {
+            
             if(client.ID === socket.id){
-                client.takeInput(data.targetLocation, data.unitID);            }
+                //we dont need unit ID
+                client.takeInput(data.targetLocation, data.unitID);            
+            }
         });
     });
 
@@ -75,15 +77,33 @@ io.sockets.on('connection',
         });
     });
 
-    socket.on("update", () => {
-        clients.forEach((client) => {
-           client.updateUnitLocations(); 
-        });
-        io.sockets.emit('clientData', clients);
+    // socket.on("update", () => {
+    //     clients.forEach((client) => {
+    //        client.updateUnitLocations(); 
+    //     });
+    //     io.sockets.emit('clientData', clients);
        
-    });
+    // });
+
+    // socket.on("update", () => {
+    //     clients.forEach((client) => {
+    //        client.updateUnitLocations(); 
+           
+    //     });
+    //     io.sockets.emit('clientData', clients);
+    // });
+    
     
   }
   
 );
+
+function update(){
+    clients.forEach((client) => {
+       client.updateUnitLocations();  
+    });
+    io.sockets.emit('clientData', clients);
+}
+
+setInterval(update, 25);
 

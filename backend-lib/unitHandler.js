@@ -31,6 +31,7 @@ class Unit{
         this.position ={x:a, y:b};
         this.job = job;
         this.target = "undefined";
+        this.currentHealth =this.job.hp;
     }
 
     move(key){
@@ -46,6 +47,7 @@ class Unit{
     }
 
     goTarget(){
+
         if (this.target !== "undefined"){
             let target = new vector(this.target.x, this.target.y);
             let position = new vector(this.position.x, this.position.y);
@@ -53,10 +55,12 @@ class Unit{
             let distance = directionVector.length();
             let velocity = directionVector.clone().normalize().multiplyScalar(2);
   
-            if(distance > 10){
+            if(distance > 1){
                 this.position.x += velocity.x;
                 this.position.y += velocity.y;
             }
+            
+            //else make target undefined
         
         }
         

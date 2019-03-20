@@ -5,11 +5,8 @@ let allClients = [];
 let thisClient;
 var currentUnit = 1;
 var socket;
-const unitKeyList = [49, 50, 51, 52,53]
-
-
-
-
+const unitKeyList = [49, 50, 51, 52,53];
+let gameState;
 
 
 socket = io({transports: ['websocket'], upgrade: false}).connect();
@@ -19,6 +16,7 @@ socket.on('clientData',
             return client.ID === socket.id;   
         }); 
         allClients=clients;
+        gameState = {allClients: allClients, thisClient:thisClient };
     }
 )
 
@@ -54,25 +52,22 @@ function setup() {
 }
 
 function draw() {
-    background(50);
-    drawUnits();
+    drawWorld(gameState);
     textSize(20);
-    fill(0);
     text(thisClient.units[thisClient.currentUnit-1].job.name, 50, 50);
     if(keyIsPressed){
         data = {key: keys, unitID:currentUnit};
         socket.emit('moveKey', data);    
     }
-    socket.emit("update");
+    // socket.emit("update");
+    
 }
 
 socket.on('unitMoved', function(clients){
-    console.log("unit moved triggereedd");
         thisClient = clients.find(client => {
             return client.ID === socket.id;
         }); 
         allClients=clients;  
-        drawUnits();
     }
 );
 
@@ -99,34 +94,32 @@ function keyPressed(){
     };
 
     
-    drawUnits();
 }
 
 
 
-function drawUnits(){
-    allClients.forEach((client) => {     
-        let teamColor = client.color;
-        fill(teamColor);
-        colorMode(HSB, 255);
-        for(var i=0; i<5; i++){
-            noStroke();
-            if(i === client.currentUnit -1){
-                stroke("red");
-               strokeWeight(4);
-            }
-            client.currentUnit
-            ellipse(client.units[i].position.x, client.units[i].position.y, 30, 30);
-        }
-        noStroke();
-    });
-}
+// function drawUnits(){
+//     allClients.forEach((client) => {     
+//         let teamColor = client.color;
+//         fill(teamColor);
+//         colorMode(HSB, 255);
+//         for(var i=0; i<5; i++){
+//             noStroke();
+//             if(i === client.currentUnit -1){
+//                 stroke("red");
+//                strokeWeight(4);
+//             }
+//             ellipse(client.units[i].position.x, client.units[i].position.y, 30, 30);
+//         }
+//         noStroke();
+//     });
+// }
 
 function sendTarget(event){
-    const targetLocation = {x: event.clientX, y: event.clientY};
-    const data = {targetLocation: targetLocation, unitID:currentUnit}
-    console.log("Current unit: " + currentUnit);
+    let targetLocation = {x: event.clientX, y: event.clientY};
+    let data = {targetLocation: targetLocation, unitID:currentUnit}
     socket.emit("targetSet", data);
+
 }
 
 //event listener for a left click
