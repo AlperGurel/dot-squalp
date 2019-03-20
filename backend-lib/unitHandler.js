@@ -10,12 +10,12 @@ module.exports = {
 
     createInitialUnits: function(){
         units =[];
-        for(var i=0; i<5; i++)
+        for(var i=1; i<=5; i++)
         {
-            if(i===0)
-                units.push(new Unit(new jobs.ranger()));
+            if(i===1)
+                units.push(new Unit(new jobs.ranger(), i));
             else
-                units.push(new Unit(new jobs.default()));
+                units.push(new Unit(new jobs.default(), i));
         }
         return units;
     }
@@ -23,15 +23,16 @@ module.exports = {
 }
 
 class Unit{
-    constructor(job){
+    constructor(job, id){
         let tmp= createPosition();
         var a =tmp.posx;
         var b =tmp.posy;
-        this.ID = 0;
+        this.ID = id;
         this.position ={x:a, y:b};
         this.job = job;
         this.target = "undefined";
         this.currentHealth =this.job.hp;
+        this.unitSize = 30;
     }
 
     move(key){
@@ -53,9 +54,9 @@ class Unit{
             let position = new vector(this.position.x, this.position.y);
             let directionVector = target.subtract(position);
             let distance = directionVector.length();
-            let velocity = directionVector.clone().normalize().multiplyScalar(2);
+            let velocity = directionVector.clone().normalize().multiplyScalar(this.job.speed);
   
-            if(distance > 1){
+            if(distance > 4){
                 this.position.x += velocity.x;
                 this.position.y += velocity.y;
             }
@@ -64,6 +65,17 @@ class Unit{
         
         }
         
+    }
+    toggleSkill(skillCode){
+        if(skillCode === 81){
+            this.job.skills.forEach((skill, index) => {
+                if(skill.name.contains("bladeFury")){
+                    this.job.skills[index].activate();
+                }
+                
+            });
+            
+        }
     }
     
 }

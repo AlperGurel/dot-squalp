@@ -3,6 +3,7 @@ const app = new express();
 const port = 3000;
 const server = require('http').Server(app);
 const clientHandler = require('./backend-lib/clientHandler');
+const collisionHandler = require("./backend-lib/collision");
 let io = require('socket.io')(server);
 let clients = [];
 
@@ -76,6 +77,14 @@ io.sockets.on('connection',
             }
         });
     });
+    socket.on("Skill", (skillCode) => {
+        clients.forEach((client) => {
+            if(client.ID===socket.id)
+            {
+                client.sendUnitSkill(skillCode);
+            }
+        });
+    });
 
     // socket.on("update", () => {
     //     clients.forEach((client) => {
@@ -102,7 +111,11 @@ function update(){
     clients.forEach((client) => {
        client.updateUnitLocations();  
     });
-    io.sockets.emit('clientData', clients);
+    collisionHandler.checkCollision(clients);
+    let gameState = {
+        clients: clients
+    }
+    io.sockets.emit('clientData', gameState);
 }
 
 setInterval(update, 25);

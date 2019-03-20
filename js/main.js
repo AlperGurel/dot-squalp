@@ -6,6 +6,7 @@ let thisClient;
 var currentUnit = 1;
 var socket;
 const unitKeyList = [49, 50, 51, 52,53];
+const skillKeyList = [81];
 let gameState;
 
 
@@ -92,6 +93,12 @@ function keyPressed(){
         socket.emit("unitChange", currentUnit);
 
     };
+    if(skillKeyList.includes(keyCode)){
+        if(keyCode === 81){
+            //check if that unit has that skill
+            socket.emit("Skill", keyCode);
+        }
+    }
 
     
 }
@@ -125,3 +132,5 @@ function sendTarget(event){
 //event listener for a left click
 //take position of mouseX and mouseY as a targetLocation
 document.addEventListener("click", sendTarget);
+
+

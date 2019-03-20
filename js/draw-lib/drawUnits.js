@@ -3,6 +3,7 @@
 function drawUnits(gameState){
     drawCharacters(gameState);
     drawHealthBars(gameState);
+    drawID(gameState);
 
 };
 
@@ -50,17 +51,15 @@ function drawHealthBars(gameState){
     });
 }
 
-// function drawID(gameState){
-//     let allClients= gameState.allClients;
-//     let thisClient= gameState.thisClient;
-//     allClients.forEach((client) => {     
-//         for(var i=0; i<5; i++){
-//             text("1", client.units[i].position.x, client.units[i].position.y )
-//             }
 
-//         }
-
-
-//     });
-
-// }
+function drawID(gameState){
+    let allClients = gameState.allClients;
+    allClients.forEach((client) => {
+        client.units.forEach((unit) => {
+            textSize(20);
+            fill("black");
+            textAlign(CENTER, CENTER);
+            text(unit.ID, unit.position.x, unit.position.y)
+        });
+    });
+}

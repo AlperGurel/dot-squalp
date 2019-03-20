@@ -42,6 +42,9 @@ class Client {
             }
         });
     }
+    sendUnitSkill(skillCode){
+        this.units[this.currentUnit-1].toggleSkill(skillCode);
+    }
 
 }
 
