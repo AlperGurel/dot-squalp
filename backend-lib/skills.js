@@ -3,7 +3,7 @@ module.exports = {
         constructor(){
             this.name = "bladeFury";
             this.damage = 1;
-            this.cooldown =15 ;
+            this.cooldown =5 ;
             this.onCoolDown = false;
             this.keyCode = 81;
             this.range = 70;

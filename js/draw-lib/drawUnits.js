@@ -1,9 +1,11 @@
 
 
 function drawUnits(gameState){
+    drawSkill(gameState);
     drawCharacters(gameState);
     drawHealthBars(gameState);
     drawID(gameState);
+    
 
 };
 
@@ -68,4 +70,21 @@ function drawID(gameState){
 
         });
     });
+}
+
+function drawSkill(gameState){
+    let allClients = gameState.allClients;
+    allClients.forEach((client) => {
+        client.units.forEach((unit) => {
+            if(unit.alive === 1){
+                if(unit.job.skills[0].activated){
+                    fill(219, 134, 30, 100);
+                    ellipse(unit.position.x, unit.position.y, unit.job.skills[0].range, unit.job.skills[0].range);
+                }
+            }
+
+        });
+    });
+
+
 }

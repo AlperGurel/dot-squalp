@@ -61,6 +61,7 @@ function draw() {
     //dont try to reach currentunit by index
     //thisClient.selectedUnit.job.name
     if(thisClient.units[currentUnit-1]){
+        fill("black");
         text(thisClient.units[currentUnit-1].job.name, 50, 50);
     }
 
