@@ -1,3 +1,4 @@
+
 let UNITSIZE ;
 let INITIALPOS;
 let units = [];
@@ -54,8 +55,9 @@ function setup() {
 }
 
 function draw() {
-    drawWorld(gameState);
-    textSize(20);
+    if(gameState){
+        drawWorld(gameState);
+        textSize(20);
     //dont try to reach currentunit by index
     //thisClient.selectedUnit.job.name
     if(thisClient.units[currentUnit-1]){
@@ -67,6 +69,9 @@ function draw() {
         data = {key: keys, unitID:currentUnit};
         socket.emit('moveKey', data);    
     }
+    }
+    
+    
     // socket.emit("update");
     
 }

@@ -15,8 +15,9 @@ module.exports = {
                     let distance = directionVector.length();
                     let dpsTimer;
                     if(distance < activatedUnit.job.skills[0].range){
-                         dpsTimer = setInterval(() => damageFromSkill(activatedUnit, unit), 1); 
-
+                        //dpsTimer = setInterval(() => damageFromSkill(activatedUnit, unit), 1); 
+                        damageFromSkill(activatedUnit, unit);
+                      
                     }
                     else{
                         clearTimeout(dpsTimer);
@@ -34,6 +35,8 @@ module.exports = {
 }
 function damageFromSkill(damager, victim){
     victim.currentHealth -= damager.job.skills[0].damage;
+    console.log(victim.currentHealth);
+    // victim.currentHealth -= 1;
    }
 
 

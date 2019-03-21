@@ -71,7 +71,10 @@ class Unit{
         if(skillCode === 81){
             this.job.skills.forEach((skill, index) => {""
                 if(skill.name.includes("bladeFury")){
-                    this.job.skills[index].activate();
+                    if(this.job.skills[index].onCoolDown == false){
+                        this.job.skills[index].activate();
+                    }
+                    
             } 
             });
             
