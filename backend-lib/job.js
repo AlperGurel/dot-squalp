@@ -1,3 +1,4 @@
+const skills = require("./skills");
 module.exports = {
     ranger: class{
         constructor(){
@@ -14,7 +15,7 @@ module.exports = {
 
     default: class{
         constructor(){
-            this.hp=1;
+            this.hp=20;
             this.damage=50;
             this.speed=5;
             this.level=1;
@@ -22,6 +23,20 @@ module.exports = {
             this.range = 100;
             this.cost=100;
             this.name = "default";
+        }
+    },
+    melee: class{
+        constructor(){
+            this.skills = [new skills.bladefury()];
+            this.hp=200;
+            this.damage=50;
+            this.speed=5;
+            this.level=1;
+            this.experience=0;
+            this.range = 50;
+            this.cost=100;
+            this.name = "melee";
+            
         }
     }
 }
