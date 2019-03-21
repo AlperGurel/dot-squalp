@@ -4,6 +4,8 @@ const port = 3000;
 const server = require('http').Server(app);
 const clientHandler = require('./backend-lib/clientHandler');
 const collisionHandler = require("./backend-lib/collision");
+let gameController = require("./backend-lib/gameController");
+gameController = gameController.gameController;
 let io = require('socket.io')(server);
 let clients = [];
 
@@ -85,23 +87,7 @@ io.sockets.on('connection',
             }
         });
     });
-
-    // socket.on("update", () => {
-    //     clients.forEach((client) => {
-    //        client.updateUnitLocations(); 
-    //     });
-    //     io.sockets.emit('clientData', clients);
-       
-    // });
-
-    // socket.on("update", () => {
-    //     clients.forEach((client) => {
-    //        client.updateUnitLocations(); 
-           
-    //     });
-    //     io.sockets.emit('clientData', clients);
-    // });
-    
+   
     
   }
   
@@ -112,6 +98,7 @@ function update(){
        client.updateUnitLocations();  
     });
     collisionHandler.checkCollision(clients);
+    gameController(clients);
     // let gameState = {
     //     clients: clients
     // };

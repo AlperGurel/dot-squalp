@@ -4,6 +4,7 @@ let units = [];
 let allClients = [];
 let thisClient;
 var currentUnit = 1;
+var lastUnit = currentUnit;
 var socket;
 const unitKeyList = [49, 50, 51, 52,53];
 const skillKeyList = [81];
@@ -55,7 +56,13 @@ function setup() {
 function draw() {
     drawWorld(gameState);
     textSize(20);
-    text(thisClient.units[thisClient.currentUnit-1].job.name, 50, 50);
+    //dont try to reach currentunit by index
+    //thisClient.selectedUnit.job.name
+    if(thisClient.units[currentUnit-1]){
+        text(thisClient.units[currentUnit-1].job.name, 50, 50);
+    }
+
+    
     if(keyIsPressed){
         data = {key: keys, unitID:currentUnit};
         socket.emit('moveKey', data);    
@@ -75,6 +82,7 @@ socket.on('unitMoved', function(clients){
 
 function keyPressed(){
     if(unitKeyList.includes(keyCode)){
+        lastUnit = currentUnit;
         if(keyCode===49){
             currentUnit = 1;
         }
@@ -102,25 +110,6 @@ function keyPressed(){
 
     
 }
-
-
-
-// function drawUnits(){
-//     allClients.forEach((client) => {     
-//         let teamColor = client.color;
-//         fill(teamColor);
-//         colorMode(HSB, 255);
-//         for(var i=0; i<5; i++){
-//             noStroke();
-//             if(i === client.currentUnit -1){
-//                 stroke("red");
-//                strokeWeight(4);
-//             }
-//             ellipse(client.units[i].position.x, client.units[i].position.y, 30, 30);
-//         }
-//         noStroke();
-//     });
-// }
 
 function sendTarget(event){
     let targetLocation = {x: event.clientX, y: event.clientY};

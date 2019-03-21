@@ -14,17 +14,29 @@ class Client {
         this.units = unitHandler.createInitialUnits();
         this.color = this.getRandomColor();
         this.currentUnit =1;
+        this.selectedUnit = units[0];
     }
 
 
     ////// MEMBER FUNCTIONS
     takeInput(data, unitID){
-        this.currentUnit=unitID;
-        this.units[this.currentUnit-1].move(data);
-        this.units[this.currentUnit-1].target = data;
+        // this.currentUnit=unitID;
+        // this.units[this.currentUnit-1].move(data);
+        // this.units[this.currentUnit-1].target = data;
+        this.units.forEach(unit => {
+            if(unit.ID == unitID){
+                unit.target = data;
+            }
+        });
+
     }
     changeUnit(unitID){
         this.currentUnit = unitID;
+        /*
+       this.units.forEach(unit => {
+            if
+        });
+        */
     }
     getRandomColor() {
         var letters = '0123456789ABCDEF';
@@ -45,6 +57,11 @@ class Client {
     sendUnitSkill(skillCode){
         this.units[this.currentUnit-1].toggleSkill(skillCode);
     }
+    // killUnit(unitID){
+    //     this.units = this.units.filter(unit => {
+    //         unit.ID !== unitID;
+    //     });
+    // }
 
 }
 

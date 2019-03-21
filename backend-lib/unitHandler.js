@@ -33,6 +33,7 @@ class Unit{
         this.target = "undefined";
         this.currentHealth =this.job.hp;
         this.unitSize = 30;
+        this.alive = 1;
     }
 
     move(key){

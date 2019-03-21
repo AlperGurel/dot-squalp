@@ -13,12 +13,16 @@ module.exports = {
                     let skillPosition = new vector(activatedUnit.position.x, activatedUnit.position.y);
                     let directionVector = skillPosition.subtract(unitPosition);
                     let distance = directionVector.length();
+                    let dpsTimer;
+                    if(distance < activatedUnit.job.skills[0].range){
+                         dpsTimer = setInterval(() => damageFromSkill(activatedUnit, unit), 1); 
 
-                    if(distance < activatedUnit.job.skills[0].range)
-                        setInterval(() => damageFromSkill(activatedUnit, unit), 1); 
-                        console.log(unit.currentHealth);
-                        console.log("distance:" +  distance);
                     }
+                    else{
+                        clearTimeout(dpsTimer);
+                    }
+                    }
+                    
                 })
             }
         });

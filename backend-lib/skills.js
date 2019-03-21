@@ -2,7 +2,7 @@ module.exports = {
     bladefury: class{
         constructor(){
             this.name = "bladeFury";
-            this.damage = 20;
+            this.damage = 0.01;
             this.cooldown = 10;
             this.keyCode = 81;
             this.range = 70;
