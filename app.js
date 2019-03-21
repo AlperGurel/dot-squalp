@@ -3,7 +3,7 @@ const app = new express();
 const port = 3000;
 const server = require('http').Server(app);
 const clientHandler = require('./backend-lib/clientHandler');
-
+const collisionHandler = require("./backend-lib/collision");
 let io = require('socket.io')(server);
 let clients = [];
 
@@ -31,13 +31,13 @@ io.sockets.on('connection',
     client = clientHandler.createClient(socket.id);
     clients.push(client);
     io.sockets.emit('clientData', clients);
-    var tmp = clients.map((el) => {
+        var tmp = clients.map((el) => {
         return el.ID;
     })
     console.log("All Client List: " + tmp);
     
 
-     socket.on('disconnect', function() {
+    socket.on('disconnect', function() {
         console.log("disconnect: ", socket.id);
         clients = clients.filter(client => {
             return client.ID !== socket.id;
@@ -45,8 +45,7 @@ io.sockets.on('connection',
        io.sockets.emit('clientData', clients);
     });
     
-    socket.on('moveKey', function(data) {
-        
+    socket.on('_moveKey', function(data) {
         for(var i=0; i<clients.length; i++){
             if(clients[i].ID===socket.id)
             {
@@ -58,9 +57,66 @@ io.sockets.on('connection',
         var tmp = clients.map((el) => {
             return el.ID;
         })
-        }
-    )
+        });
+    // test mouseClick
+    socket.on("targetSet", (data) => {
+        clients.forEach((client) => {
+            
+            if(client.ID === socket.id){
+                //we dont need unit ID
+                client.takeInput(data.targetLocation, data.unitID);            
+            }
+        });
+    });
+
+    socket.on("unitChange", (currentUnit) => {
+        clients.forEach((client) => {
+            if(client.ID===socket.id)
+            {
+                client.changeUnit(currentUnit);
+            }
+        });
+    });
+    socket.on("Skill", (skillCode) => {
+        clients.forEach((client) => {
+            if(client.ID===socket.id)
+            {
+                client.sendUnitSkill(skillCode);
+            }
+        });
+    });
+
+    // socket.on("update", () => {
+    //     clients.forEach((client) => {
+    //        client.updateUnitLocations(); 
+    //     });
+    //     io.sockets.emit('clientData', clients);
+       
+    // });
+
+    // socket.on("update", () => {
+    //     clients.forEach((client) => {
+    //        client.updateUnitLocations(); 
+           
+    //     });
+    //     io.sockets.emit('clientData', clients);
+    // });
+    
+    
   }
   
 );
+
+function update(){
+    clients.forEach((client) => {
+       client.updateUnitLocations();  
+    });
+    collisionHandler.checkCollision(clients);
+    // let gameState = {
+    //     clients: clients
+    // };
+    io.sockets.emit('clientData', clients);
+}
+
+setInterval(update, 25);
 

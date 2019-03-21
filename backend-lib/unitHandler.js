@@ -1,4 +1,5 @@
 const jobs = require('./job');
+const vector= require("victor");
 
 module.exports = {
 
@@ -9,12 +10,12 @@ module.exports = {
 
     createInitialUnits: function(){
         units =[];
-        for(var i=0; i<5; i++)
+        for(var i=1; i<=5; i++)
         {
-            if(i===0)
-                units.push(new Unit(new jobs.ranger()));
+            if(i===1)
+                units.push(new Unit(new jobs.melee(), i));
             else
-                units.push(new Unit(new jobs.default()));
+                units.push(new Unit(new jobs.melee(), i));
         }
         return units;
     }
@@ -22,25 +23,18 @@ module.exports = {
 }
 
 class Unit{
-    constructor(job){
+    constructor(job, id){
         let tmp= createPosition();
         var a =tmp.posx;
         var b =tmp.posy;
-        this.ID = 0;
+        this.ID = id;
         this.position ={x:a, y:b};
         this.job = job;
+        this.target = "undefined";
+        this.currentHealth =this.job.hp;
+        this.unitSize = 30;
     }
-    // move(key){
-    //     if(key === 38) //up
-    //         this.position.y -= 5;
-    //     if(key ===39) //right
-    //         this.position.x += 5;
-    //     if(key === 40) //down
-    //         this.position.y += 5;
-    //     if(key===37) //left
-    //         this.position.x -= 5;
-        
-    // }
+
     move(key){
         if(key.hasOwnProperty(38)) //up
             this.position.y -= 5;
@@ -51,6 +45,36 @@ class Unit{
         if(key.hasOwnProperty(37)) //left
             this.position.x -= 5;
         
+    }
+
+    goTarget(){
+
+        if (this.target !== "undefined"){
+            let target = new vector(this.target.x, this.target.y);
+            let position = new vector(this.position.x, this.position.y);
+            let directionVector = target.subtract(position);
+            let distance = directionVector.length();
+            let velocity = directionVector.clone().normalize().multiplyScalar(this.job.speed);
+  
+            if(distance > 4){
+                this.position.x += velocity.x;
+                this.position.y += velocity.y;
+            }
+            
+            //else make target undefined
+        
+        }
+        
+    }
+    toggleSkill(skillCode){
+        if(skillCode === 81){
+            this.job.skills.forEach((skill, index) => {""
+                if(skill.name.includes("bladeFury")){
+                    this.job.skills[index].activate();
+            } 
+            });
+            
+        }
     }
     
 }
