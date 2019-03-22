@@ -57,13 +57,13 @@ function setup() {
 function draw() {
     if(gameState){
         drawWorld(gameState);
-        textSize(20);
+        // textSize(20);
     //dont try to reach currentunit by index
     //thisClient.selectedUnit.job.name
-    if(thisClient.units[currentUnit-1]){
-        fill("black");
-        text(thisClient.units[currentUnit-1].job.name, 50, 50);
-    }
+    // if(thisClient.units[currentUnit-1]){
+    //     fill("black");
+    //     text(thisClient.units[currentUnit-1].job.name, 50, 50);
+    // }
 
     
     if(keyIsPressed){

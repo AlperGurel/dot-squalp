@@ -1,6 +1,7 @@
 function drawWorld(gameState){
     drawMap();
-    // drawUI();
+    drawUI(gameState);
     drawUnits(gameState);
+    
 };
 

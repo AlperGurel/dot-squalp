@@ -51,7 +51,7 @@ io.sockets.on('connection',
         for(var i=0; i<clients.length; i++){
             if(clients[i].ID===socket.id)
             {
-                clients[i].takeInput(data.key, data.unitID);
+                clients[i].takeInput(data.key);
                 break;
             }
         }
@@ -66,7 +66,7 @@ io.sockets.on('connection',
             
             if(client.ID === socket.id){
                 //we dont need unit ID
-                client.takeInput(data.targetLocation, data.unitID);            
+                client.takeInput(data.targetLocation);            
             }
         });
     });

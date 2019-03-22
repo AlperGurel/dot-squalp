@@ -14,24 +14,30 @@ class Client {
         this.units = unitHandler.createInitialUnits();
         this.color = this.getRandomColor();
         this.currentUnit =1;
-        this.selectedUnit = units[0];
+        // this.selectedUnit = units[0];
     }
 
 
     ////// MEMBER FUNCTIONS
-    takeInput(data, unitID){
+    takeInput(data){
         // this.currentUnit=unitID;
         // this.units[this.currentUnit-1].move(data);
         // this.units[this.currentUnit-1].target = data;
         this.units.forEach(unit => {
-            if(unit.ID == unitID){
+            if(unit.ID == this.currentUnit){
                 unit.target = data;
             }
         });
 
     }
     changeUnit(unitID){
-        this.currentUnit = unitID;
+        //if unitid in unitlist
+        this.units.forEach((unit) => {
+            if(unitID === unit.ID){
+                this.currentUnit = unitID;
+            }
+        });
+        
         /*
        this.units.forEach(unit => {
             if
